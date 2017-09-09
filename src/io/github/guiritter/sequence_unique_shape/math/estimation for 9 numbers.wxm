@@ -1,0 +1,21 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 16.04.2 ] */
+
+/* [wxMaxima: comment start ]
+https://www.mycurvefit.com/
+4   2
+5   4
+6   12
+7   39
+8   202
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ev(
+    55477770 + (3.874619 - 55477770) / (1 + (x/21.37651)^12.76188)
+    , x = [4,5,6,7,8,9]
+);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
