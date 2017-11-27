@@ -26,7 +26,7 @@ It's about forming the neighborhoods in the reverse direction. Every combination
 
 It's about changing the ordering of the numbers in the sequence (while maintaining the neighborhoods). It can be computed by removing numbers from the first position and adding to the last, or vice-versa. Since it doesn't matter in which number the sequence starts, it's convenient to always start it at the same number, such as zero, so forms can be tested for equality by testing each number in order.
 
-I managed to find all such sequences for `n` up to 8. For 9, I ran the program for a few minutes but it didn't finish. I suppose it takes too long. I used online curve fitting software and estimated that there should have about 894 unique sequences of 9 numbers, so, yeah, it should take quite a while to find all of them. I'll leave my program running overnight to see how much time it takes. Here's all the sequences for 4 numbers (2 sequences):
+I managed to find all such sequences for `n` up to 8. For 9, it threw `java.lang.OutOfMemoryError: Java heap space`, even with `-Xmx3G`, after 24 minutes and 37 seconds. I used online curve fitting software and estimated that there should have about 894 unique sequences of 9 numbers, so, yeah, I think it will take some improvements to manage that. Here's all the sequences for 4 numbers (2 sequences):
 
 <img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/4.svg" height="128" alt="all sequences with four numbers"/>
 
