@@ -4,6 +4,7 @@ import io.github.guiritter.tallycounter.TallyCounter;
 import static io.github.guiritter.tallycounter.TallyCounter.Type.UNIQUE_NUMBERS;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -50,7 +51,7 @@ public final class SequenceGenerator {
         SequenceGenerator generator = new SequenceGenerator();
         int size = 8;
         LinkedList<Sequence> sequenceList = generator.generate(size);
-        boolean graphFlag = true;
+        boolean graphFlag = false;
 //        for (Sequence sequence : sequenceList) {
 //            System.out.println(sequence);
 //        }
@@ -59,17 +60,19 @@ public final class SequenceGenerator {
         SequenceGrapher grapher = null;
         int array[] = null;
         int i;
+        Distance distance = new Distance();
+        array = new int[size];
         if (graphFlag) {
             grapher = new SequenceGrapher(512, size, new File("C:\\Users\\GuiR\\Downloads\\test"));
-            array = new int[size];
         }
         for (Sequence sequence : sequenceListUnrepeated) {
+            for (i = 0; i < sequence.original.size(); i++) {
+                array[i] = sequence.original.get(i);
+            }
             if (graphFlag) {
-                for (i = 0; i < sequence.original.size(); i++) {
-                    array[i] = sequence.original.get(i);
-                }
                 grapher.graph(array);
             }
+            System.out.println(Arrays.toString(array) + "\t" + Arrays.toString(distance.op(array)));
 //            System.out.println(Arrays.toString(array));
 //            System.out.println(sequence);
         }
