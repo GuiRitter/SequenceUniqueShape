@@ -55,3 +55,9 @@ I found a few interesting things while tackling these problems. If you look at a
 This program is not user friendly, because it's meant only to test these theories. So, you'll need to look at the source code and edit it to your needs.
 
 Depends on my [TallyCounter](https://github.com/GuiRitter/TallyCounter).
+
+## Version 1
+
+I actually managed to improve how duplicates are detected and discarded. I don't know how I didn't think of this before. Since a sequence can be transformed into many equivalent forms, it's much more efficient to define a method to elect one of these forms as the canonical one. Since all sequences that are equivalent generate the same set of equivalent forms, they're also bound to generate the same canonical form. So, there's no need to store the many forms, just the canonical one. What's more, this form can be turned into an unique number, making comparison even more efficient.
+
+For sequences of 8 numbers, sequence generation went from 8.1 seconds to 1.2 seconds. It managed to find sequences of 9 numbers. I predicted 894 sequences and found 1219 after 12 seconds. I'll leave it running overnight with much higher values to see where it goes.

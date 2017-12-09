@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
  *
  * @author Guilherme Alan Ritter
  */
-public final class SequenceGrapher {
+public final class Grapher {
 
     private final int WHITE[] = {255, 255, 255};
 
@@ -79,7 +79,7 @@ public final class SequenceGrapher {
         ImageIO.write(image, "png", folder.toPath().resolve(Arrays.toString(sequence).replace("[", "").replace("]", "").replace(",", "") + ".png").toFile());
     }
 
-    public SequenceGrapher(int imageSize, int pointAmount, File folder) {
+    public Grapher(int imageSize, int pointAmount, File folder) {
         if (!folder.isDirectory()) {
             throw new RuntimeException("\"folder\" must be a folder");
         }
@@ -104,7 +104,7 @@ public final class SequenceGrapher {
 
     public static void main(String args[]) throws IOException {
 //        new SequenceGrapher(512, 5, null);
-        SequenceGrapher grapher = new SequenceGrapher(512, 7, new File("C:/Users/GuiR/Downloads/test/"));
+        Grapher grapher = new Grapher(512, 7, new File("C:/Users/GuiR/Downloads/test/"));
         grapher.graph(new int[]{0, 1, 2, 3, 4, 5, 6});
     }
 }

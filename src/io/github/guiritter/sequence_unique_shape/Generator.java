@@ -2,15 +2,13 @@ package io.github.guiritter.sequence_unique_shape;
 
 import io.github.guiritter.tallycounter.TallyCounter;
 import static io.github.guiritter.tallycounter.TallyCounter.Type.UNIQUE_NUMBERS;
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
  * ignoring all treatments for now (null or empty parameters, etc)
  */
-public final class SequenceGenerator {
+public final class Generator {
 
     private TallyCounter counter;
 
@@ -24,6 +22,7 @@ public final class SequenceGenerator {
         int index = 0;
         while (!counter.overflowFlag) {
             list.add(new Sequence(/*index++, */counter.getArray()));
+//            System.out.println(list.getLast());
             counter.increment();
         }
         return list;
@@ -48,22 +47,29 @@ public final class SequenceGenerator {
     }
 
     public static void main(String args[]) throws IOException {
-        SequenceGenerator generator = new SequenceGenerator();
+        Generator generator = new Generator();
         int size = 8;
-        LinkedList<Sequence> sequenceList = generator.generate(size);
         boolean graphFlag = false;
+        long timeA;
+        long timeB;
+        timeA = System.nanoTime();
+        LinkedList<Sequence> sequenceList = generator.generate(size);
 //        for (Sequence sequence : sequenceList) {
 //            System.out.println(sequence);
 //        }
 //        System.out.println();
         LinkedList<Sequence> sequenceListUnrepeated = generator.removeDuplicate(sequenceList);
-        SequenceGrapher grapher = null;
+        timeB = System.nanoTime();
+        System.out.println(sequenceListUnrepeated.size());
+        System.out.println(timeB - timeA);
+        /*
+        Grapher grapher = null;
         int array[] = null;
         int i;
         Distance distance = new Distance();
         array = new int[size];
         if (graphFlag) {
-            grapher = new SequenceGrapher(512, size, new File("C:\\Users\\GuiR\\Downloads\\test"));
+            grapher = new Grapher(512, size, new File("C:\\Users\\GuiR\\Downloads\\test"));
         }
         for (Sequence sequence : sequenceListUnrepeated) {
             for (i = 0; i < sequence.original.size(); i++) {
@@ -76,5 +82,6 @@ public final class SequenceGenerator {
 //            System.out.println(Arrays.toString(array));
 //            System.out.println(sequence);
         }
+        /**/
     }
 }
