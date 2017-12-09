@@ -46,14 +46,13 @@ public final class Generator1 {
 
     public static void main(String args[]) throws IOException {
         Generator1 generator = new Generator1();
-        int size = 8;
+        int size = 10;
         long timeA;
         long timeB;
         timeA = System.nanoTime();
         LinkedList<Sequence1> sequenceList = generator.generate(size);
         LinkedList<Sequence1> sequenceListUnrepeated = generator.removeDuplicate(sequenceList);
         timeB = System.nanoTime();
-        System.out.println(sequenceListUnrepeated.size());
-        System.out.println(timeB - timeA);
+        System.out.println(sequenceListUnrepeated.size() + "\t\t" + (timeB - timeA));
     }
 }

@@ -1,0 +1,28 @@
+ant -f /home/guir/NetBeansProjects/SequenceUniqueShape -Djavac.includes=io/github/guiritter/sequence_unique_shape/Generator1.java -Dnb.internal.action.name=run.single -Drun.class=io.github.guiritter.sequence_unique_shape.Generator1 run-single
+init:
+Deleting: /home/guir/NetBeansProjects/SequenceUniqueShape/build/built-jar.properties
+deps-jar:
+Updating property file: /home/guir/NetBeansProjects/SequenceUniqueShape/build/built-jar.properties
+TallyCounter.init:
+TallyCounter.deps-jar:
+Updating property file: /home/guir/NetBeansProjects/SequenceUniqueShape/build/built-jar.properties
+TallyCounter.compile:
+Copying 1 file to /home/guir/NetBeansProjects/TallyCounter/build
+Nothing to copy.
+To run this application from the command line without Ant, try:
+java -jar "/home/guir/NetBeansProjects/TallyCounter/dist/TallyCounter.jar"
+TallyCounter.jar:
+Compiling 1 source file to /home/guir/NetBeansProjects/SequenceUniqueShape/build/classes
+compile-single:
+run-single:
+Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at java.util.LinkedList.linkLast(LinkedList.java:142)
+	at java.util.LinkedList.addLast(LinkedList.java:304)
+	at io.github.guiritter.sequence_unique_shape.Sequence1.getOffsettedToZero(Sequence1.java:47)
+	at io.github.guiritter.sequence_unique_shape.Sequence1.<init>(Sequence1.java:144)
+	at io.github.guiritter.sequence_unique_shape.Sequence1.<init>(Sequence1.java:174)
+	at io.github.guiritter.sequence_unique_shape.Generator1.generate(Generator1.java:23)
+	at io.github.guiritter.sequence_unique_shape.Generator1.main(Generator1.java:53)
+/home/guir/NetBeansProjects/SequenceUniqueShape/nbproject/build-impl.xml:1059: The following error occurred while executing this line:
+/home/guir/NetBeansProjects/SequenceUniqueShape/nbproject/build-impl.xml:805: Java returned: 1
+BUILD FAILED (total time: 19 minutes 48 seconds)

@@ -24,6 +24,8 @@ public final class Sequence1 {
 
     public final LinkedList<Integer> canonical = new LinkedList<>();
 
+    public final int size;
+
     public final long value;
 
     /**
@@ -55,23 +57,16 @@ public final class Sequence1 {
         if (!(obj instanceof Sequence1)) {
             return false;
         }
-        if (canonical.size() != ((Sequence1) obj).canonical.size()) {
+        if (size != ((Sequence1) obj).size) {
             return false;
         }
-        /*
-        boolean equal;
-        int i;
-        int size = original.size();
-        equal = true;
-        for (i = 1; i < size; i++) {
+        for (int i = 1; i < size; i++) {
             if (!canonical.get(i).equals(((Sequence1) obj).canonical.get(i))) {
-                equal = false;
-                break;
+                return false;
             }
         }
-        return equal;
-        /**/
-        return value == ((Sequence1) obj).value;
+        return true;
+//        return value == ((Sequence1) obj).value;
     }
 
     @Override
@@ -80,6 +75,17 @@ public final class Sequence1 {
         hash = 31 * hash + Objects.hashCode(this.canonical);
         hash = 31 * hash + (int) (this.value ^ (this.value >>> 32));
         return hash;
+    }
+
+    private boolean isFirstSmallerThanSecond(LinkedList<Integer> first, LinkedList<Integer> second) {
+        for (int i = 0; i < size; i++) {
+            if (first.get(i) < second.get(i)) {
+                return true;
+            } else if (first.get(i) > second.get(i)) {
+                return false;
+            }
+        }
+        return false;
     }
 
     private static int[] longArrayToIntArray(long array[]) {
@@ -111,7 +117,7 @@ public final class Sequence1 {
         }
         int i;
         int rotationI;
-        int size = original.size();
+        size = original.size();
         long valueForm;
         long valueMinimum = MAX_VALUE;
         Value sequenceValue = new Value(size);
@@ -119,6 +125,7 @@ public final class Sequence1 {
         boolean reverseOption[] = new boolean[]{false, true};
         for (i = 0; i < size; i++) {
             mirror.set(i, (size - mirror.get(i)) % size);
+            canonical.add(size - 1);
         }
         LinkedList<Integer> temporary;
         LinkedList<LinkedList<Integer>> originalOrMirrorList = new LinkedList<>();
@@ -135,9 +142,18 @@ public final class Sequence1 {
                         Collections.reverse(temporary);
                     }
                     temporary = getOffsettedToZero(temporary);
+                    /*
+                    // removed because, due to using long, maximum array size is 15
+                    // more than that results in overflow
+                    // could use BigInteger, but at this point it's simply better to compare index by index
                     valueForm = sequenceValue.of(temporary);
                     if (valueMinimum > valueForm) {
                         valueMinimum = valueForm;
+                        canonical.clear();
+                        canonical.addAll(temporary);
+                    }
+                    /**/
+                    if (isFirstSmallerThanSecond(temporary, canonical)) {
                         canonical.clear();
                         canonical.addAll(temporary);
                     }

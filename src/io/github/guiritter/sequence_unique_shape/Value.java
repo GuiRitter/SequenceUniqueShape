@@ -1,6 +1,8 @@
 package io.github.guiritter.sequence_unique_shape;
 
+import io.github.guiritter.tallycounter.TallyCounter;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,6 +43,19 @@ public final class Value {
         valueDigitArray = new long[size];
         for (int i = 0; i < size; i++) {
             valueDigitArray[i] = (new BigInteger(size + "")).pow(size - i - 1).longValue();
+        }
+    }
+
+    public static void main(String args[]) {
+        TallyCounter counter = new TallyCounter(3, TallyCounter.Type.UNIQUE_NUMBERS, 2);
+        Value value = new Value(3);
+        int array[] = new int[3];
+        while (!counter.overflowFlag) {
+            for (int i = 0; i < 3; i++) {
+                array[i] = (int) counter.getArray()[i];
+            }
+            System.out.println(Arrays.toString(counter.getArray()) + "\t" + value.of(array));
+            counter.increment();
         }
     }
 }
