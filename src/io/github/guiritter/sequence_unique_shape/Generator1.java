@@ -28,16 +28,8 @@ public final class Generator1 {
 
     public LinkedList<Sequence1> removeDuplicate(LinkedList<Sequence1> sequenceList) {
         returnList = new LinkedList<>();
-        boolean contains;
         for (Sequence1 sequenceArgument : sequenceList) {
-            contains = false;
-            for (Sequence1 sequenceReturn : returnList) {
-                if (sequenceArgument.equals(sequenceReturn)) {
-                    contains = true;
-                    break;
-                }
-            }
-            if (!contains) {
+            if (!returnList.contains(sequenceArgument)) {
                 returnList.add(sequenceArgument);
             }
         }
@@ -46,7 +38,7 @@ public final class Generator1 {
 
     public static void main(String args[]) throws IOException {
         Generator1 generator = new Generator1();
-        int size = 10;
+        int size = 8;
         long timeA;
         long timeB;
         timeA = System.nanoTime();
