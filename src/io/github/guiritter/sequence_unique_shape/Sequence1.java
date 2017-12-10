@@ -1,6 +1,5 @@
 package io.github.guiritter.sequence_unique_shape;
 
-import static java.lang.Long.MAX_VALUE;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -26,8 +25,6 @@ public final class Sequence1 {
 
     public final int size;
 
-    public final long value;
-
     /**
      * Returns a new sequence where the first segment starts at zero.
      * Explores the fact that the sequence is cyclic. Thus,
@@ -36,17 +33,14 @@ public final class Sequence1 {
      * With this operation, every segment is replaced by the following one
      * until the first one starts at zero.
      * @param list
-     * @return
      */
-    public static LinkedList<Integer> getOffsettedToZero(LinkedList<Integer> list) {
-        LinkedList<Integer> returnList = new LinkedList<>(list);
-        if (!returnList.contains(0)) {
-            return null;
+    public static void getOffsettedToZero(LinkedList<Integer> list) {
+        if (!list.contains(0)) {
+            return;
         }
-        while (returnList.getFirst() != 0) {
-            returnList.addLast(returnList.removeFirst());
+        while (list.getFirst() != 0) {
+            list.addLast(list.removeFirst());
         }
-        return returnList;
     }
 
     @Override
@@ -66,14 +60,12 @@ public final class Sequence1 {
             }
         }
         return true;
-//        return value == ((Sequence1) obj).value;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 31 * hash + Objects.hashCode(this.canonical);
-        hash = 31 * hash + (int) (this.value ^ (this.value >>> 32));
+        int hash = 3;
+        hash = 47 * hash + Objects.hashCode(this.canonical);
         return hash;
     }
 
@@ -88,14 +80,6 @@ public final class Sequence1 {
         return false;
     }
 
-    private static int[] longArrayToIntArray(long array[]) {
-        int intArray[] = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            intArray[i] = (int) array[i];
-        }
-        return intArray;
-    }
-
     @Override
     public String toString() {
         return canonical.toString();
@@ -107,10 +91,10 @@ public final class Sequence1 {
      * for the sake of comparison.
      * @param array
      */
-    public Sequence1(int array[]) {
+    public Sequence1(long array[]) {
         LinkedList<Integer> original = new LinkedList<>();
-        for (int l : array) {
-            original.add(l);
+        for (long l : array) {
+            original.add((int) l);
         }
         if (!original.contains(0)) {
             throw new RuntimeException("Sequence must contain a zero.");
@@ -118,22 +102,20 @@ public final class Sequence1 {
         int i;
         int rotationI;
         size = original.size();
-        long valueForm;
-        long valueMinimum = MAX_VALUE;
-        Value sequenceValue = new Value(size);
         LinkedList<Integer> mirror = new LinkedList<>(original);
         boolean reverseOption[] = new boolean[]{false, true};
         for (i = 0; i < size; i++) {
             mirror.set(i, (size - mirror.get(i)) % size);
             canonical.add(size - 1);
         }
-        LinkedList<Integer> temporary;
+        LinkedList<Integer> temporary = new LinkedList<>();
         LinkedList<LinkedList<Integer>> originalOrMirrorList = new LinkedList<>();
         originalOrMirrorList.add(original);
         originalOrMirrorList.add(mirror);
         for (LinkedList<Integer> originalOrMirror : originalOrMirrorList) {
             for (rotationI = 0; rotationI < size; rotationI++) {
-                temporary = new LinkedList<>(originalOrMirror);
+                temporary.clear();
+                temporary.addAll(originalOrMirror);
                 for (i = 0; i < size; i++) {
                     temporary.set(i, (temporary.get(i) + rotationI) % size);
                 }
@@ -141,18 +123,7 @@ public final class Sequence1 {
                     if (isReversed) {
                         Collections.reverse(temporary);
                     }
-                    temporary = getOffsettedToZero(temporary);
-                    /*
-                    // removed because, due to using long, maximum array size is 15
-                    // more than that results in overflow
-                    // could use BigInteger, but at this point it's simply better to compare index by index
-                    valueForm = sequenceValue.of(temporary);
-                    if (valueMinimum > valueForm) {
-                        valueMinimum = valueForm;
-                        canonical.clear();
-                        canonical.addAll(temporary);
-                    }
-                    /**/
+                    getOffsettedToZero(temporary);
                     if (isFirstSmallerThanSecond(temporary, canonical)) {
                         canonical.clear();
                         canonical.addAll(temporary);
@@ -160,23 +131,11 @@ public final class Sequence1 {
                 }
             }
         }
-        value = valueMinimum;
-//        System.out.println(value + "\t" + canonical);
-    }
-
-    /**
-     * Constructs this sequence with all of it's forms.
-     * May generate duplicate forms, but it doesn't make a difference
-     * for the sake of comparison.
-     * @param array
-     */
-    public Sequence1(long array[]) {
-        this(longArrayToIntArray(array));
     }
 
     public static void main(String args[]) {
 //        new Sequence(new long[]{0, 1, 2, 3, 4/*, 5, 6*/});
-        Sequence1 sequence = new Sequence1(new int[]{4, 2, 3, 1, 0});
+        Sequence1 sequence = new Sequence1(new long[]{4, 2, 3, 1, 0});
         System.out.println("sequence 3");
         System.out.println(sequence.canonical);
     }

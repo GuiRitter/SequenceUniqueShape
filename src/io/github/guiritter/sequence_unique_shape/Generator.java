@@ -48,7 +48,7 @@ public final class Generator {
 
     public static void main(String args[]) throws IOException {
         Generator generator = new Generator();
-        int size = 8;
+        int size = 5;
         boolean graphFlag = false;
         long timeA;
         long timeB;
