@@ -6,41 +6,41 @@ I've written a program that does that.
 
 Though the sequence exists only in one dimension, it's easier to understand these concepts by visualizing them. The sequence can be mapped a polygon, with vertices coinciding with those of a convex regular n-gon. Then, every vertex is a number and every line segment is a neighborhood between two numbers.
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/sequence.svg" height="256" alt="sequence example in an hexagon (012453)"/>
+![sequence example in an hexagon (012453)](src/io/github/guiritter/sequence_unique_shape/image/sequence.svg)
 
 This way, it's easy to visually see what kinds of transformations do not alter the "shape" of the polygon. The first such transformation is the mirroring:
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/mirror.svg" height="256" alt="012453 mirrored"/>
+![012453 mirrored](src/io/github/guiritter/sequence_unique_shape/image/mirror.svg)
 
 It must be done about an axis, which can either go through numbers or the space between them, but in practice only any one is necessary. About the number zero, it's computed by `(size - numberValue) % size`, where `size` is the amount of numbers. The second transformation is the rotation:
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/rotation.svg" height="256" alt="012453 rotated"/>
+![012453 rotated](src/io/github/guiritter/sequence_unique_shape/image/rotation.svg)
 
 It can be done in either direction, but a rotation by 1 in a direction is the same as a rotation by `size - 1` in the other direction. Also, a combination of mirrorings and rotations result in other combinations of mirrorings and rotations, and that's why only one mirroring is necessary. It can be computed by adding 1 to the value of each number, using the modulo to loop back to zero. The third transformation is the reversion:
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/reverse.svg" height="256" alt="012453 reversed"/>
+![012453 reversed](src/io/github/guiritter/sequence_unique_shape/image/reverse.svg)
 
 It's about forming the neighborhoods in the reverse direction. Every combination of mirroring and rotation needs also to be reversed for the equality test. It can be computed by reversing the ordering of the numbers. It looks like it's the same as mirroring by the number(s) in the middle, but remember that mirroring work with the number's value and reversion works with the number's position, and that makes all the diference. The last transformation is the offset:
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/offset.svg" height="256" alt="012453 offsetted"/>
+![012453 offsetted](src/io/github/guiritter/sequence_unique_shape/image/offset.svg)
 
 It's about changing the ordering of the numbers in the sequence (while maintaining the neighborhoods). It can be computed by removing numbers from the first position and adding to the last, or vice-versa. Since it doesn't matter in which number the sequence starts, it's convenient to always start it at the same number, such as zero, so forms can be tested for equality by testing each number in order.
 
 I managed to find all such sequences for `n` up to 8. For 9, it threw `java.lang.OutOfMemoryError: Java heap space`, even with `-Xmx3G`, after 24 minutes and 37 seconds. I used online curve fitting software and estimated that there should have about 894 unique sequences of 9 numbers, so, yeah, I think it will take some improvements to manage that. Here's all the sequences for 4 numbers (2 sequences):
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/4.svg" height="128" alt="all sequences with four numbers"/>
+![all sequences with four numbers](src/io/github/guiritter/sequence_unique_shape/image/4.svg)
 
 5 numbers (4 sequences):
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/5.svg" height="256" alt="all sequences with five numbers"/>
+![all sequences with five numbers](src/io/github/guiritter/sequence_unique_shape/image/5.svg)
 
 6 numbers (12 sequences):
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/6.svg" height="384" alt="all sequences with six numbers"/>
+![all sequences with six numbers](src/io/github/guiritter/sequence_unique_shape/image/6.svg)
 
 7 numbers (39 sequences):
 
-<img src="https://cdn.rawgit.com/GuiRitter/SequenceUniqueShape/master/src/io/github/guiritter/sequence_unique_shape/image/7.svg" height="768" alt="all sequences with seven numbers"/>
+![all sequences with seven numbers](src/io/github/guiritter/sequence_unique_shape/image/7.svg)
 
 8 numbers (202 sequences):
 
