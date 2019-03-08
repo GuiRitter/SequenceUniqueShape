@@ -1,6 +1,6 @@
 package io.github.guiritter.sequence_unique_shape;
 
-import io.github.guiritter.tallycounter.TallyCounter;
+import io.github.guiritter.tally_counter.TallyCounter;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;

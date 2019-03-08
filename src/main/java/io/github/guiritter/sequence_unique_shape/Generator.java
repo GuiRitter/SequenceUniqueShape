@@ -1,7 +1,7 @@
 package io.github.guiritter.sequence_unique_shape;
 
-import io.github.guiritter.tallycounter.TallyCounter;
-import static io.github.guiritter.tallycounter.TallyCounter.Type.UNIQUE_NUMBERS;
+import io.github.guiritter.tally_counter.TallyCounter;
+import static io.github.guiritter.tally_counter.TallyCounter.Type.UNIQUE_NUMBERS;
 import java.io.IOException;
 import java.util.LinkedList;
 

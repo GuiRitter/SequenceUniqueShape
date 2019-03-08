@@ -16,7 +16,7 @@ import java.util.Objects;
  * <li>Rotation: replace the value of each number by the next value.
  * <li>Reversal: replace the position of the first number
  * by the ultimate position, the second by the penultimate one, etc.
- * <li>Offset: replace the position of each number by the next position.<ul>
+ * <li>Offset: replace the position of each number by the next position.</ul>
  * @author GuiR
  */
 public final class Sequence {
@@ -35,8 +35,8 @@ public final class Sequence {
      * going from number <code>n</code> to <code>n + 1</code>.
      * With this operation, every segment is replaced by the following one
      * until the first one starts at zero.
-     * @param list
-     * @return
+     * @param list a sequence
+     * @return the sequence cycled such that the first element is zero
      */
     public static LinkedList<Integer> getOffsettedToZero(LinkedList<Integer> list) {
         LinkedList<Integer> returnList = new LinkedList<>(list);
@@ -82,7 +82,7 @@ public final class Sequence {
 
     /**
      * Almost mandatory override.
-     * @return
+     * @return unique code
      */
     @Override
     public int hashCode() {
@@ -109,7 +109,7 @@ public final class Sequence {
      * Constructs this sequence with all of it's forms.
      * May generate duplicate forms, but it doesn't make a difference
      * for the sake of comparison.
-     * @param array
+     * @param array numbers
      */
     public Sequence(int array[]) {
         for (int l : array) {
@@ -154,7 +154,7 @@ public final class Sequence {
      * Constructs this sequence with all of it's forms.
      * May generate duplicate forms, but it doesn't make a difference
      * for the sake of comparison.
-     * @param array
+     * @param array numbers
      */
     public Sequence(long array[]) {
         this(longArrayToIntArray(array));

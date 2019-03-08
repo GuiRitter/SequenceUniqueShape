@@ -6,45 +6,45 @@ I've written a program that does that.
 
 Though the sequence exists only in one dimension, it's easier to understand these concepts by visualizing them. The sequence can be mapped a polygon, with vertices coinciding with those of a convex regular n-gon. Then, every vertex is a number and every line segment is a neighborhood between two numbers.
 
-![sequence example in an hexagon (012453)](src/io/github/guiritter/sequence_unique_shape/image/sequence.svg)
+![sequence example in an hexagon (012453)](image/sequence.svg)
 
 This way, it's easy to visually see what kinds of transformations do not alter the "shape" of the polygon. The first such transformation is the mirroring:
 
-![012453 mirrored](src/io/github/guiritter/sequence_unique_shape/image/mirror.svg)
+![012453 mirrored](image/mirror.svg)
 
 It must be done about an axis, which can either go through numbers or the space between them, but in practice only any one is necessary. About the number zero, it's computed by `(size - numberValue) % size`, where `size` is the amount of numbers. The second transformation is the rotation:
 
-![012453 rotated](src/io/github/guiritter/sequence_unique_shape/image/rotation.svg)
+![012453 rotated](image/rotation.svg)
 
 It can be done in either direction, but a rotation by 1 in a direction is the same as a rotation by `size - 1` in the other direction. Also, a combination of mirrorings and rotations result in other combinations of mirrorings and rotations, and that's why only one mirroring is necessary. It can be computed by adding 1 to the value of each number, using the modulo to loop back to zero. The third transformation is the reversion:
 
-![012453 reversed](src/io/github/guiritter/sequence_unique_shape/image/reverse.svg)
+![012453 reversed](image/reverse.svg)
 
 It's about forming the neighborhoods in the reverse direction. Every combination of mirroring and rotation needs also to be reversed for the equality test. It can be computed by reversing the ordering of the numbers. It looks like it's the same as mirroring by the number(s) in the middle, but remember that mirroring work with the number's value and reversion works with the number's position, and that makes all the diference. The last transformation is the offset:
 
-![012453 offsetted](src/io/github/guiritter/sequence_unique_shape/image/offset.svg)
+![012453 offsetted](image/offset.svg)
 
 It's about changing the ordering of the numbers in the sequence (while maintaining the neighborhoods). It can be computed by removing numbers from the first position and adding to the last, or vice-versa. Since it doesn't matter in which number the sequence starts, it's convenient to always start it at the same number, such as zero, so forms can be tested for equality by testing each number in order.
 
 I managed to find all such sequences for `n` up to 8. For 9, it threw `java.lang.OutOfMemoryError: Java heap space`, even with `-Xmx3G`, after 24 minutes and 37 seconds. I used online curve fitting software and estimated that there should have about 894 unique sequences of 9 numbers, so, yeah, I think it will take some improvements to manage that. Here's all the sequences for 4 numbers (2 sequences):
 
-![all sequences with four numbers](src/io/github/guiritter/sequence_unique_shape/image/4.svg)
+![all sequences with four numbers](image/4.svg)
 
 5 numbers (4 sequences):
 
-![all sequences with five numbers](src/io/github/guiritter/sequence_unique_shape/image/5.svg)
+![all sequences with five numbers](image/5.svg)
 
 6 numbers (12 sequences):
 
-![all sequences with six numbers](src/io/github/guiritter/sequence_unique_shape/image/6.svg)
+![all sequences with six numbers](image/6.svg)
 
 7 numbers (39 sequences):
 
-![all sequences with seven numbers](src/io/github/guiritter/sequence_unique_shape/image/7.svg)
+![all sequences with seven numbers](image/7.svg)
 
 8 numbers (202 sequences):
 
-![all sequences with eight numbers](src/io/github/guiritter/sequence_unique_shape/image/8.png)
+![all sequences with eight numbers](image/8.png)
 
 Although my program is capable of finding these sequences for `n` up to infinity (I suppose), clearly it can't do that in a practical amount of time. That's because it generates every single possible combination of numbers and then tests all of them for equality to remove the duplicate sequences. Ideally, it should generate the unique sequences from scratch, which should increase it's performance by a lot, but I still haven't managed to find out how to do that. I would be happy if someone managed to do it and made it available to all as I'm doing.
 
@@ -69,3 +69,9 @@ I added a method that generates the sequences by only adding to the list sequenc
 Theoretically, it's not the right way, but it might allow my program to go a bit further. Even then, it can be seen that it will not be able to go to much larger numbers without the unique sequences being generated directly, instead of generating all possibilities and then removing the duplicates.
 
 Also, I didn't call this a new version because I'm keeping both sequence generation methods.
+
+### Update
+
+I did a test way back in 2017-12-17 and forgot to add the results here. I managed to find all sequences of 11 numbers. I found 83 435 sequences after 23 hours, 23 minutes, 8 seconds, 477 milliseconds, 58 microseconds and 881 nanoseconds (that's if I calculated correctly; original value is 84188477058881 nanoseconds).
+
+[A few words about Maven.](https://gist.github.com/GuiRitter/1834bd024756e08ab422026a7cd24605)

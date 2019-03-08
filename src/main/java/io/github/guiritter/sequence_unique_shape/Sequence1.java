@@ -32,7 +32,7 @@ public final class Sequence1 {
      * going from number <code>n</code> to <code>n + 1</code>.
      * With this operation, every segment is replaced by the following one
      * until the first one starts at zero.
-     * @param list
+     * @param list a sequence
      */
     public static void getOffsettedToZero(LinkedList<Integer> list) {
         if (!list.contains(0)) {
@@ -89,7 +89,7 @@ public final class Sequence1 {
      * Constructs this sequence with all of it's forms.
      * May generate duplicate forms, but it doesn't make a difference
      * for the sake of comparison.
-     * @param array
+     * @param array numbers
      */
     public Sequence1(long array[]) {
         LinkedList<Integer> original = new LinkedList<>();
