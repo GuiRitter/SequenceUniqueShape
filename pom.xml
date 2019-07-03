@@ -4,7 +4,7 @@
 
   <groupId>io.github.guiritter</groupId>
   <artifactId>sequence-unique-shape</artifactId> 
-  <version>1.2.1</version> 
+  <version>1.2.2</version> 
   <packaging>jar</packaging>
 
   <name>Sequence Unique Shape</name> 
@@ -39,6 +39,12 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>com.github.GuiRitter</groupId>
+      <artifactId>FitLinear</artifactId>
+      <version>master-SNAPSHOT</version>
+    </dependency>
+
     <dependency>
       <groupId>com.github.GuiRitter</groupId>
       <artifactId>TallyCounter</artifactId>

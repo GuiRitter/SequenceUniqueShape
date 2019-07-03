@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 
+import io.github.guiritter.fit_linear.FitLinear;
+
 /**
  *
  * @author Guilherme Alan Ritter
