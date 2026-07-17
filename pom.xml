@@ -4,7 +4,7 @@
 
   <groupId>io.github.guiritter</groupId>
   <artifactId>sequence-unique-shape</artifactId> 
-  <version>1.2.2</version> 
+  <version>1.2.3</version> 
   <packaging>jar</packaging>
 
   <name>Sequence Unique Shape</name> 
