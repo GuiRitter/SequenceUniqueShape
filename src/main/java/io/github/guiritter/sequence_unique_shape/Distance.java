@@ -4,7 +4,9 @@ import static java.lang.Integer.MAX_VALUE;
 import static java.lang.Integer.min;
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
+
 import java.util.Arrays;
+import java.util.function.Function;
 
 /**
  * Defines a distance metric for numbers in a circular sequence. The numbers
@@ -25,110 +27,86 @@ import java.util.Arrays;
  * and the distance between furthest neighbors can be minimum.
  * @author Guilherme Alan Ritter
  */
-public final class Distance {
+public final class Distance implements Function<int[], int[]> {
 
-    private int distance[];
+	private int distance[];
 
-    private int distanceIndex;
+	private int distanceIndex;
 
-    private int distanceMinimum;
+	private int distanceMinimum;
 
-    private int n;
+	private int n;
 
-    private int neighborI;
+	private int neighborI;
 
-    private int neighborIndex0;
+	private int neighborIndex0;
 
-    private int neighborIndex1;
+	private int neighborIndex1;
 
-    private int neighborValue0;
+	private int neighborValue0;
 
-    private int neighborValue1;
+	private int neighborValue1;
 
-    private int sequenceIndex;
+	private int sequenceIndex;
 
-    public final int[] op(int sequence[]) {
-        n = sequence.length;
-        neighborIndex0 = -1;
-        neighborIndex1 = -1;
-        distance = new int[n / 2];
-        for (distanceIndex = 1; distanceIndex <= distance.length; distanceIndex++) {
-            distanceMinimum = MAX_VALUE;
-            for (sequenceIndex = 0; sequenceIndex < n; sequenceIndex++) {
-                neighborValue0 = (sequence[sequenceIndex] + distanceIndex) % n;
-                neighborValue1 = floorMod(sequence[sequenceIndex] - distanceIndex, n);
-                for (neighborI = 0; neighborI < n; neighborI++) {
-                    if (sequence[neighborI] == neighborValue0) {
-                        neighborIndex0 = neighborI;
-                    } else if (sequence[neighborI] == neighborValue1) {
-                        neighborIndex1 = neighborI;
-                    }
-                }
-                distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex0) % n);
-                distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex1) % n);
-            }
-            distance[distanceIndex - 1] = distanceMinimum;
-        }
-        return distance;
-    }
+	@Override
+	public int[] apply(int sequence[]) {
+		n = sequence.length;
+		neighborIndex0 = -1;
+		neighborIndex1 = -1;
+		distance = new int[n / 2];
+		// First, looks for the distance between numbers that are the next and the previous numerically.
+		// For example, if a sequence contains a number 1, looks for the distance between the positions of the numbers 0 and 1 and the distance between the positions of the numbers 1 and 2.
+		//
+		// Second, looks for the distance between numbers that have one number between the next and the previous.
+		// For example, if a sequence contains a number 2, looks for the distance between the positions of the numbers 0 and 2 and the distance between the positions of the numbers 2 and 4.
+		//
+		// Third, looks for the distance between numbers that have two numbers between the next and the previous.
+		// For example, if a sequence contains a number 3, looks for the distance between the positions of the numbers 0 and 3 and the distance between the positions of the numbers 3 and 6.
+		//
+		// And so on and so forth.
+		for (distanceIndex = 1; distanceIndex <= distance.length; distanceIndex++) {
+			distanceMinimum = MAX_VALUE;
+			// Looks for whichever numbers are at each position in the sequence
+			// sequence[sequenceIndex] is the number being considered right now
+			for (sequenceIndex = 0; sequenceIndex < n; sequenceIndex++) {
+				// neighborValue0 is the next number numerically, distant from sequence[sequenceIndex] by distanceIndex (1 if immediately the next one)
+				neighborValue0 = (sequence[sequenceIndex] + distanceIndex) % n;
+				// neighborValue1 is the previous number numerically, distant from sequence[sequenceIndex] by distanceIndex (1 if immediately the previous one)
+				neighborValue1 = floorMod(sequence[sequenceIndex] - distanceIndex, n);
+				// Iterates the entire sequence to find the position of each neighbor
+				for (neighborI = 0; neighborI < n; neighborI++) {
+					if (sequence[neighborI] == neighborValue0) {
+						neighborIndex0 = neighborI;
+					} else if (sequence[neighborI] == neighborValue1) {
+						neighborIndex1 = neighborI;
+					}
+				}
+				// Calculates the distance between sequence[sequenceIndex] and the neighbor (considering wrapping around the sequence) and stores it in memory if it's smaller than the previous distance found,
+				// because the most desirable sequences are the ones with this number as high as possible for closest neighbors and decreasingly so for further neighbors.
+				distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex0) % n);
+				distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex1) % n);
+			}
+			// Stores the smallest distance (between number positions) for each distance (numerical proximity between numbers).
+			// The most desirable sequences have this array with the values in the first indexes as high as possible and decreasing on the next indexes.
+			distance[distanceIndex - 1] = distanceMinimum;
+		}
+		return distance;
+	}
 
-    public static void main(String args[]) {
-//        int sequence[] = {0, 1, 2, 3, 4};
-       int sequence[] = {0, 2, 4, 1, 3};
-//        int sequence[] = {0, 3, 6, 2, 5, 1, 4};
-//        int sequence[] = {0, 2, 4, 6, 1, 3, 5};
-//        int sequence[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}; // step 0 // [1, 2, 3, 4, 5, 6, 7, 0]
-//        int sequence[] = {0, 3, 6, 9, 12, 15, 2, 5, 8, 11, 14, 1, 4, 7, 10, 13}; // step 2 // [5, 6, 1, 4, 7, 2, 3, 0]
-//        int sequence[] = {0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11}; // step 4 // [3, 6, 7, 4, 1, 2, 5, 0]
-        // int sequence[] = {0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9}; // step 6 // [7, 2, 5, 4, 3, 6, 1, 0]
-        int distanceIndex;
-        int n = sequence.length;
-        int distance[] = new int[n / 2];
-        int sequenceIndex;
-        int neighborValue0;
-        int neighborValue1;
-        int neighborI;
-        int neighborIndex0 = -1;
-        int neighborIndex1 = -1;
-        int distanceMinimum;
-        // First, looks for the distance between numbers that are the next and the previous numerically.
-        // For example, if a sequence contains a number 1, looks for the distance between the positions of the numbers 0 and 1 and the distance between the positions of the numbers 1 and 2.
-        //
-        // Second, looks for the distance between numbers that have one number between the next and the previous.
-        // For example, if a sequence contains a number 2, looks for the distance between the positions of the numbers 0 and 2 and the distance between the positions of the numbers 2 and 4.
-        //
-        // Third, looks for the distance between numbers that have two numbers between the next and the previous.
-        // For example, if a sequence contains a number 3, looks for the distance between the positions of the numbers 0 and 3 and the distance between the positions of the numbers 3 and 6.
-        //
-        // And so on and so forth.
-        for (distanceIndex = 1; distanceIndex <= distance.length; distanceIndex++) {
-            distanceMinimum = MAX_VALUE;
-            // Looks for whichever numbers are at each position in the sequence
-            // sequence[sequenceIndex] is the number being considered right now
-            for (sequenceIndex = 0; sequenceIndex < n; sequenceIndex++) {
-                // neighborValue0 is the next number numerically, distant from sequence[sequenceIndex] by distanceIndex (1 if immediately the next one)
-                neighborValue0 = (sequence[sequenceIndex] + distanceIndex) % n;
-                // neighborValue1 is the previous number numerically, distant from sequence[sequenceIndex] by distanceIndex (1 if immediately the previous one)
-                neighborValue1 = floorMod(sequence[sequenceIndex] - distanceIndex, n);
-                // Iterates the entire sequence to find the position of each neighbor
-                for (neighborI = 0; neighborI < n; neighborI++) {
-                    if (sequence[neighborI] == neighborValue0) {
-                        neighborIndex0 = neighborI;
-                    } else if (sequence[neighborI] == neighborValue1) {
-                        neighborIndex1 = neighborI;
-                    }
-                }
-                // Calculates the distance between sequence[sequenceIndex] and the neighbor (considering wrapping around the sequence) and stores it in memory if it's smaller than the previous distance found,
-                // because the most desirable sequences are the ones with this number as high as possible for closest neighbors and decreasingly so for further neighbors.
-                distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex0) % n);
-                distanceMinimum = min(distanceMinimum, abs(sequenceIndex - neighborIndex1) % n);
-            }
-            // Stores the smallest distance (between number positions) for each distance (numerical proximity between numbers).
-            // The most desirable sequences have this array with the values in the first indexes as high as possible and decreasing on the next indexes.
-            distance[distanceIndex - 1] = distanceMinimum;
-        }
-        System.out.println(Arrays.toString(distance));
-    }
+	public static void main(String args[]) {
+		// int sequence[] = {0, 1, 2, 3, 4};
+		int sequence[] = {0, 2, 4, 1, 3};
+		// int sequence[] = {0, 3, 6, 2, 5, 1, 4};
+		// int sequence[] = {0, 2, 4, 6, 1, 3, 5};
+		// int sequence[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}; // step 0 // [1, 2, 3, 4, 5, 6, 7, 0]
+		// int sequence[] = {0, 3, 6, 9, 12, 15, 2, 5, 8, 11, 14, 1, 4, 7, 10, 13}; // step 2 // [5, 6, 1, 4, 7, 2, 3, 0]
+		// int sequence[] = {0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11}; // step 4 // [3, 6, 7, 4, 1, 2, 5, 0]
+		// int sequence[] = {0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9}; // step 6 // [7, 2, 5, 4, 3, 6, 1, 0]
+		Distance distanceCalculator = new Distance();
+		int distance[] = distanceCalculator.apply(sequence);
+		System.out.println(Arrays.toString(distance));
+	}
 }
 
 /*
