@@ -55,8 +55,7 @@ public final class Generator {
 
 	public static void main(String args[]) throws IOException, ScriptException {
 		Generator generator = new Generator();
-		int size = 5;
-		boolean graphFlag = false;
+		int size = 7;
 		long timeA;
 		long timeB;
 		timeA = System.nanoTime();
@@ -75,26 +74,24 @@ public final class Generator {
 			isGraph = isTruthy(args[0]);
 		};
 
+		Grapher grapher = null;
+		int array[] = null;
+		int i;
+		Distance distance = new Distance();
+		array = new int[size];
 		if (isGraph) {
-			Grapher grapher = null;
-			int array[] = null;
-			int i;
-			Distance distance = new Distance();
-			array = new int[size];
-			if (graphFlag) {
-				grapher = new Grapher(512, size, new File("C:\\Users\\GuiR\\Downloads\\test"));
+			grapher = new Grapher(512, size, new File("C:\\ciência\\matemática\\combinatória\\sequence unique shape\\graph\\7"));
+		}
+		for (Sequence sequence : sequenceListUnrepeated) {
+			for (i = 0; i < sequence.original.size(); i++) {
+				array[i] = sequence.original.get(i);
 			}
-			for (Sequence sequence : sequenceListUnrepeated) {
-				for (i = 0; i < sequence.original.size(); i++) {
-					array[i] = sequence.original.get(i);
-				}
-				if (graphFlag) {
-					grapher.graph(array);
-				}
-				System.out.println(Arrays.toString(array) + "\t" + Arrays.toString(distance.apply(array)));
-				// System.out.println(Arrays.toString(array));
-				// System.out.println(sequence);
+			if (isGraph) {
+				grapher.graph(array);
 			}
+			System.out.println(Arrays.toString(array) + "\t" + Arrays.toString(distance.apply(array)));
+			// System.out.println(Arrays.toString(array));
+			// System.out.println(sequence);
 		}
 	}
 }
