@@ -1,7 +1,7 @@
 package io.github.guiritter.sequence_unique_shape;
 
-import static io.github.guiritter.sequence_unique_shape.Util.isTruthy;
 import static io.github.guiritter.tally_counter.TallyCounter.Type.UNIQUE_NUMBERS;
+import static java.lang.System.out;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +11,19 @@ import java.util.LinkedList;
 import javax.script.ScriptException;
 
 import io.github.guiritter.tally_counter.TallyCounter;
+import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 /**
  * ignoring all treatments for now (null or empty parameters, etc)
  */
-public final class Generator {
+public final class Generator implements Runnable {
+
+	@Option(names = { "-graph" }, description = "render graphs of sequences") 
+	boolean isGraph;
+
+	// @Option(names = { "-skip-bad-distance" }, description = "skips sequences whose distance is 1 for the closest neighbors") 
+	// boolean skipBadDistance;
 
 	private TallyCounter counter;
 
@@ -26,7 +34,7 @@ public final class Generator {
 	public LinkedList<Sequence> generate(int size) {
 		counter = new TallyCounter(size, UNIQUE_NUMBERS, size - 1);
 		list.clear();
-		int index = 0;
+		// int index = 0;
 		while (!counter.overflowFlag) {
 			list.add(new Sequence(/*index++, */counter.getArray()));
 			// System.out.println(list.getLast());
@@ -53,7 +61,11 @@ public final class Generator {
 		return returnList;
 	}
 
-	public static void main(String args[]) throws IOException, ScriptException {
+	@Override
+	public void run() {
+		out.println("Sequence Unique Shape · Generator · run; graph: " + isGraph);
+		// out.println("Sequence Unique Shape · Generator · run; graph: " + isGraph + "; skipBadDistance: " + skipBadDistance);
+
 		Generator generator = new Generator();
 		int size = 7;
 		long timeA;
@@ -69,10 +81,6 @@ public final class Generator {
 		System.out.println(sequenceListUnrepeated.size());
 		System.out.println(timeB - timeA);
 		// render graph
-		boolean isGraph = false;
-		if (args.length > 0) {
-			isGraph = isTruthy(args[0]);
-		};
 
 		Grapher grapher = null;
 		int array[] = null;
@@ -93,5 +101,11 @@ public final class Generator {
 			// System.out.println(Arrays.toString(array));
 			// System.out.println(sequence);
 		}
+	}
+
+	public static void main(String args[]) throws IOException, ScriptException {
+		out.println("Sequence Unique Shape · Generator · main");
+		int exitCode = new CommandLine(new Generator()).execute(args); 
+		System.exit(exitCode); 
 	}
 }

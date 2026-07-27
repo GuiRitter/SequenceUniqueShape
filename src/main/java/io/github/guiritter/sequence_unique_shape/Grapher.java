@@ -2,6 +2,9 @@ package io.github.guiritter.sequence_unique_shape;
 
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static java.lang.System.exit;
+import static java.lang.System.out;
+
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +70,7 @@ public final class Grapher {
 
 	private int y;
 
-	public void graph(int sequence[]) throws IOException {
+	public void graph(int sequence[]) {
 		image = new BufferedImage(imageSize, imageSize, TYPE_INT_RGB);
 		raster = image.getRaster();
 		for (i = 0; i < pointAmount; i++) {
@@ -92,7 +95,13 @@ public final class Grapher {
 		distance = distanceCalculator.apply(sequence);
 		fileNameDistance = stripArrayToStringFormatCharacter(Arrays.toString(distance));
 		fileName = fileNameSequence + " · " + fileNameDistance + ".png";
-		ImageIO.write(image, "png", folder.toPath().resolve(fileName).toFile());
+		try {
+			ImageIO.write(image, "png", folder.toPath().resolve(fileName).toFile());
+		} catch (IOException e) {
+			out.println("failed to write image");
+			e.printStackTrace();
+			exit(1);
+		}
 	}
 
 	public static final String stripArrayToStringFormatCharacter(String value) {
