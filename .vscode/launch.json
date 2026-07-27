@@ -6,13 +6,20 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "distance test",
+			"request": "launch",
+			"mainClass": "io.github.guiritter.sequence_unique_shape.Distance",
+			"projectName": "sequence-unique-shape"
+		},
+		{
+			"type": "java",
 			"name": "generator with grapher",
 			"request": "launch",
 			"mainClass": "io.github.guiritter.sequence_unique_shape.Generator",
 			"projectName": "sequence-unique-shape",
 			"args": [
 				"-graph=true",
-				"-skip-bad-distance=true"
+				"-skip-bad-distance=false"
 			]
 		}
 	]
