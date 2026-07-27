@@ -11,7 +11,8 @@
 			"mainClass": "io.github.guiritter.sequence_unique_shape.Generator",
 			"projectName": "sequence-unique-shape",
 			"args": [
-				"-graph=true"
+				"-graph=true",
+				"-skip-bad-distance=true"
 			]
 		}
 	]

@@ -1,5 +1,6 @@
 package io.github.guiritter.sequence_unique_shape;
 
+import static io.github.guiritter.sequence_unique_shape.Util.arrayLongToInt;
 import static io.github.guiritter.tally_counter.TallyCounter.Type.UNIQUE_NUMBERS;
 import static java.lang.System.out;
 
@@ -22,10 +23,16 @@ public final class Generator implements Runnable {
 	@Option(names = { "-graph" }, description = "render graphs of sequences") 
 	boolean isGraph;
 
-	// @Option(names = { "-skip-bad-distance" }, description = "skips sequences whose distance is 1 for the closest neighbors") 
-	// boolean skipBadDistance;
+	@Option(names = { "-skip-bad-distance" }, description = "skips sequences whose distance is 1 for the closest neighbors") 
+	boolean skipBadDistance;
+
+	private int arrayInt[];
+
+	private long arrayLong[];
 
 	private TallyCounter counter;
+
+	private Distance distance = new Distance();
 
 	private final LinkedList<Sequence> list = new LinkedList<>();
 
@@ -36,8 +43,20 @@ public final class Generator implements Runnable {
 		list.clear();
 		// int index = 0;
 		while (!counter.overflowFlag) {
-			list.add(new Sequence(/*index++, */counter.getArray()));
-			// System.out.println(list.getLast());
+			arrayLong = counter.getArray();
+
+			if (skipBadDistance) {
+				arrayInt = arrayLongToInt(arrayLong);
+				arrayInt = distance.apply(arrayInt);
+
+				if (arrayInt[0] == 1) {
+					counter.increment();
+					continue;
+				}
+			}
+
+			list.add(new Sequence(/*index++, */arrayLong));
+			// out.println(list.getLast());
 			counter.increment();
 		}
 		return list;
@@ -63,43 +82,45 @@ public final class Generator implements Runnable {
 
 	@Override
 	public void run() {
-		out.println("Sequence Unique Shape · Generator · run; graph: " + isGraph);
-		// out.println("Sequence Unique Shape · Generator · run; graph: " + isGraph + "; skipBadDistance: " + skipBadDistance);
+		out.println("Sequence Unique Shape · Generator · run; graph: " + isGraph + "; skipBadDistance: " + skipBadDistance);
 
-		Generator generator = new Generator();
 		int size = 7;
 		long timeA;
 		long timeB;
 		timeA = System.nanoTime();
-		LinkedList<Sequence> sequenceList = generator.generate(size);
+		LinkedList<Sequence> sequenceList = generate(size);
 		// for (Sequence sequence : sequenceList) {
-		// 	System.out.println(sequence);
+		// 	out.println(sequence);
 		// }
-		// System.out.println();
-		LinkedList<Sequence> sequenceListUnrepeated = generator.removeDuplicate(sequenceList);
+		// out.println();
+		LinkedList<Sequence> sequenceListUnrepeated = removeDuplicate(sequenceList);
 		timeB = System.nanoTime();
-		System.out.println(sequenceListUnrepeated.size());
-		System.out.println(timeB - timeA);
+		out.println(sequenceListUnrepeated.size());
+		out.println(timeB - timeA);
+
 		// render graph
 
 		Grapher grapher = null;
 		int array[] = null;
 		int i;
-		Distance distance = new Distance();
 		array = new int[size];
+
 		if (isGraph) {
 			grapher = new Grapher(512, size, new File("C:\\ciência\\matemática\\combinatória\\sequence unique shape\\graph\\7"));
 		}
+
 		for (Sequence sequence : sequenceListUnrepeated) {
 			for (i = 0; i < sequence.original.size(); i++) {
 				array[i] = sequence.original.get(i);
 			}
+
 			if (isGraph) {
 				grapher.graph(array);
 			}
-			System.out.println(Arrays.toString(array) + "\t" + Arrays.toString(distance.apply(array)));
-			// System.out.println(Arrays.toString(array));
-			// System.out.println(sequence);
+
+			out.println(Arrays.toString(array) + "\t" + Arrays.toString(distance.apply(array)));
+			// out.println(Arrays.toString(array));
+			// out.println(sequence);
 		}
 	}
 
