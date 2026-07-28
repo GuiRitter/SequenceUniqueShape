@@ -19,7 +19,7 @@
 			"projectName": "sequence-unique-shape",
 			"args": [
 				"-graph=true",
-				"-skip-bad-distance=false"
+				"-skip-bad-distance=true"
 			]
 		}
 	]

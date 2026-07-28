@@ -35,7 +35,8 @@ public final class Distance implements Function<int[], int[]> {
 
 	private int distanceMinimum;
 
-	private int distanceWithoutWrapping;
+	private int distanceAvecWrapping;
+	private int distanceSansWrapping;
 
 	private int n;
 
@@ -80,17 +81,20 @@ public final class Distance implements Function<int[], int[]> {
 				for (neighborI = 0; neighborI < n; neighborI++) {
 					if (sequence[neighborI] == neighborValue0) {
 						neighborIndex0 = neighborI;
-					} else if (sequence[neighborI] == neighborValue1) {
+					}
+					if (sequence[neighborI] == neighborValue1) {
 						neighborIndex1 = neighborI;
 					}
 				}
 				// Calculates the distance between sequence[sequenceIndex] and the neighbor (considering wrapping around the sequence) and stores it in memory if it's smaller than the previous distance found,
 				// because the most desirable sequences are the ones with this number as high as possible for closest neighbors and decreasingly so for further neighbors.
-				distanceWithoutWrapping = abs(sequenceIndex - neighborIndex0);
-				distanceMinimum = min(distanceMinimum, min(distanceWithoutWrapping, n - distanceWithoutWrapping));
+				distanceSansWrapping = abs(sequenceIndex - neighborIndex0);
+				distanceAvecWrapping = min(distanceSansWrapping, n - distanceSansWrapping);
+				distanceMinimum = min(distanceMinimum, distanceAvecWrapping);
 				
-				distanceWithoutWrapping = abs(sequenceIndex - neighborIndex1);
-				distanceMinimum = min(distanceMinimum, min(distanceWithoutWrapping, n - distanceWithoutWrapping));
+				distanceSansWrapping = abs(sequenceIndex - neighborIndex1);
+				distanceAvecWrapping = min(distanceSansWrapping, n - distanceSansWrapping);
+				distanceMinimum = min(distanceMinimum, distanceAvecWrapping);
 			}
 			// Stores the smallest distance (between number positions) for each distance (numerical proximity between numbers).
 			// The most desirable sequences have this array with the values in the first indexes as high as possible and decreasing on the next indexes.
@@ -104,7 +108,8 @@ public final class Distance implements Function<int[], int[]> {
 		// int sequence[] = {0, 2, 4, 1, 3};
 		// int sequence[] = {0, 3, 6, 2, 5, 1, 4};
 		// int sequence[] = {0, 2, 4, 6, 1, 3, 5};
-		int sequence[] = {6, 3, 5, 1, 4, 2, 0};
+		// int sequence[] = {6, 3, 5, 1, 4, 2, 0};
+		int sequence[] = {5, 2, 7, 4, 1, 6, 3, 0};
 		// int sequence[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}; // step 0 // [1, 2, 3, 4, 5, 6, 7, 0]
 		// int sequence[] = {0, 3, 6, 9, 12, 15, 2, 5, 8, 11, 14, 1, 4, 7, 10, 13}; // step 2 // [5, 6, 1, 4, 7, 2, 3, 0]
 		// int sequence[] = {0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11}; // step 4 // [3, 6, 7, 4, 1, 2, 5, 0]
